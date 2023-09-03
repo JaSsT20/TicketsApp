@@ -53,6 +53,10 @@ android {
         correctErrorTypes = true
     }
 }
+//evita el error: task (current target is 1.8) and 'kaptGenerateStubsDebugKotlin' task (current target is 17) jvm target compatibility should be set to the same Java version.
+tasks.withType(type = org.jetbrains.kotlin.gradle.internal.KaptGenerateStubsTask::class) {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+}
 
 dependencies {
 
