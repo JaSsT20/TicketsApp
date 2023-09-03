@@ -15,36 +15,39 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun ClientScreen(){
+fun ClientScreen(
+    viewModel: ClientViewModel = hiltViewModel()
+){
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        NameTextField()
-        SaveButton()
+        NameTextField(viewModel)
+        SaveButton(viewModel)
     }
 
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NameTextField(){
+fun NameTextField(viewModel: ClientViewModel) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Nombres") },
         singleLine = true,
-        value = "",
-        onValueChange = { }
+        value = viewModel.name,
+        onValueChange = { viewModel.name = it  }
     )
 }
 
 @Composable
-fun SaveButton(){
+fun SaveButton(viewModel: ClientViewModel) {
     OutlinedButton(
-        onClick = { /*TODO*/ },
+        onClick = { viewModel.saveClient() },
         modifier = Modifier.fillMaxWidth()
     ) {
         Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "guardar")
