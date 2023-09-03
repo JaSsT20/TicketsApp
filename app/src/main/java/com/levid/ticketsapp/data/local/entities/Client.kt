@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class Client(
     @PrimaryKey(autoGenerate = true)
     val clientId: Int? = null,
-    val nombre: String = ""
+    val name: String = ""
 )
