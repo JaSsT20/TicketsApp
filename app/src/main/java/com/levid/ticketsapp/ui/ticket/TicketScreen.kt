@@ -17,21 +17,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ticketScreen(){
+fun TicketScreen(){
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        nameTextField()
-        saveButton()
+        NameTextField()
+        SaveButton()
     }
 
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun nameTextField(){
+fun NameTextField(){
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Nombres") },
@@ -41,9 +41,8 @@ fun nameTextField(){
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun saveButton(){
+fun SaveButton(){
     OutlinedButton(
         onClick = { /*TODO*/ },
         modifier = Modifier.fillMaxWidth()
@@ -56,5 +55,5 @@ fun saveButton(){
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewTicketScreen(){
-    ticketScreen()
+    TicketScreen()
 }
