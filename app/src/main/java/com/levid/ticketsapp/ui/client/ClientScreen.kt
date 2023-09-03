@@ -1,4 +1,4 @@
-package com.levid.ticketsapp.ui.ticket
+package com.levid.ticketsapp.ui.client
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TicketScreen(){
+fun ClientScreen(){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,6 +54,6 @@ fun SaveButton(){
 
 @Preview(showSystemUi = true)
 @Composable
-fun PreviewTicketScreen(){
-    TicketScreen()
+fun PreviewClientScreen(){
+    ClientScreen()
 }
