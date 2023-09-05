@@ -16,7 +16,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,8 +27,8 @@ import com.levid.ticketsapp.data.local.entities.Client
 
 @Composable
 fun ClientScreen(
-    viewModel: ClientViewModel = hiltViewModel()
-){
+    viewModel: ClientViewModel = hiltViewModel(),
+) {
     val clients by viewModel.clients.collectAsStateWithLifecycle()
     Column(
         modifier = Modifier
@@ -48,27 +50,33 @@ fun NameTextField(viewModel: ClientViewModel) {
         label = { Text(text = "Nombres") },
         singleLine = true,
         value = viewModel.name,
-        onValueChange = { viewModel.name = it  }
+        onValueChange = { viewModel.name = it }
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SaveButton(viewModel: ClientViewModel) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     OutlinedButton(
-        onClick = { viewModel.saveClient() },
+        onClick = {
+            keyboardController?.hide()
+            viewModel.saveClient()
+        },
         modifier = Modifier.fillMaxWidth()
     ) {
         Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "guardar")
         Text(text = "Guardar")
     }
 }
+
 @Composable
 fun ShowList(clients: List<Client>) {
     Text(text = "Lista de Clientes", style = MaterialTheme.typography.titleMedium)
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
-        items(clients){ client->
+        items(clients) { client ->
             Text(text = client.name)
         }
     }
@@ -76,6 +84,6 @@ fun ShowList(clients: List<Client>) {
 
 @Preview(showSystemUi = true)
 @Composable
-fun PreviewClientScreen(){
+fun PreviewClientScreen() {
     ClientScreen()
 }
