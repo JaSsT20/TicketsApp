@@ -19,7 +19,7 @@ object AppModule{
         Room.databaseBuilder(
             appDbContext,
             AppDb::class.java,
-            "AppDb")
+            "AppDb.db")
             .fallbackToDestructiveMigration()
             .build()
 }
