@@ -28,18 +28,22 @@ class ClientViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = emptyList()
         )
-
     fun saveClient(){
         viewModelScope.launch {
             val client = Client(
                 name = name
             )
-            appDb.clientDao().save(client)
-            cleanFields()
+            if(isValid())
+            {
+                appDb.clientDao().save(client)
+                cleanFields()
+            }
         }
     }
-
-    fun cleanFields(){
+    private fun cleanFields(){
         name = ""
+    }
+    private fun isValid() : Boolean{
+        return name.isEmpty() || name.isBlank()
     }
 }
