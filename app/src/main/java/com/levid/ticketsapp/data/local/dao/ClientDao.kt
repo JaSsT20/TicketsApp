@@ -11,4 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface ClientDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(client: Client)
+
+    @Query("SELECT * FROM Clients")
+    fun getAll(): Flow<List<Client>>
 }
