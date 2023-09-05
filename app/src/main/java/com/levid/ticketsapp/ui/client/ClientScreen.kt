@@ -77,7 +77,9 @@ fun ShowList(clients: List<Client>) {
         modifier = Modifier.fillMaxWidth()
     ) {
         items(clients) { client ->
-            Text(text = client.name)
+            Text(
+                text = "${client.clientId}-${client.name}"
+            )
         }
     }
 }
