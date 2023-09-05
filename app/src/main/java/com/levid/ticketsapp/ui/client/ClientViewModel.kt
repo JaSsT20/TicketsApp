@@ -1,6 +1,5 @@
 package com.levid.ticketsapp.ui.client
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -44,6 +43,6 @@ class ClientViewModel @Inject constructor(
         name = ""
     }
     private fun isValid() : Boolean{
-        return name.isEmpty() || name.isBlank()
+        return !(name.isEmpty() || name.isBlank())
     }
 }
