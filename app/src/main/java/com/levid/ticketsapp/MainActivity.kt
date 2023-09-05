@@ -10,9 +10,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.levid.ticketsapp.data.local.AppDb
+import com.levid.ticketsapp.di.AppModule
+import com.levid.ticketsapp.ui.client.ClientScreen
+import com.levid.ticketsapp.ui.client.ClientViewModel
 import com.levid.ticketsapp.ui.theme.TicketsAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    lateinit var appDb: AppDb
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -23,6 +30,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
+                    ClientScreen()
                 }
             }
         }
