@@ -83,7 +83,11 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.44")
 
     //ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    val lifeCycleVersion = "2.6.1"
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifeCycleVersion")
+
+    // Para poder usar collectAsStateWithLifeCycle
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifeCycleVersion")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
