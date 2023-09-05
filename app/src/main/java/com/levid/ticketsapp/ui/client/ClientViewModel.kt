@@ -35,6 +35,11 @@ class ClientViewModel @Inject constructor(
                 name = name
             )
             appDb.clientDao().save(client)
+            cleanFields()
         }
+    }
+
+    fun cleanFields(){
+        name = ""
     }
 }
