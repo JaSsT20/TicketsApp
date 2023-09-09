@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.levid.ticketsapp.data.local.AppDb
 import com.levid.ticketsapp.data.local.entities.Client
 import com.levid.ticketsapp.data.repositories.ClientRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,6 +21,12 @@ class ClientViewModel @Inject constructor(
 ): ViewModel() {
 
     var name by mutableStateOf("")
+    var telephone by mutableStateOf("")
+    var cellphone by mutableStateOf("")
+    var email by mutableStateOf("")
+    var direction by mutableStateOf("")
+    var birthDate by mutableStateOf(Date())
+    var occupation by mutableStateOf("")
 
     val clients: StateFlow<List<Client>> = clientRepository.getAll()
         .stateIn(
@@ -31,7 +37,13 @@ class ClientViewModel @Inject constructor(
     fun saveClient(){
         viewModelScope.launch {
             val client = Client(
-                name = name
+                name = name,
+                telephone = telephone,
+                cellphone = cellphone,
+                email = email,
+                direction = direction,
+                birthDate = birthDate,
+                occupation = occupation
             )
             if(isValid())
             {
@@ -42,8 +54,14 @@ class ClientViewModel @Inject constructor(
     }
     private fun cleanFields(){
         name = ""
+        telephone = ""
+        cellphone = ""
+        email = ""
+        direction = ""
+        birthDate = Date()
+        occupation = ""
     }
     private fun isValid() : Boolean{
-        return !(name.isEmpty() || name.isBlank())
+        return (name.isNotBlank())
     }
 }
