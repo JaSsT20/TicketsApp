@@ -13,6 +13,6 @@ data class Client(
     val cellphone: String = "",
     val email: String = "",
     val direction: String = "",
-    val birthDate: Date,
+    val birthDate: Date? = null,
     val occupation: String = ""
 )
