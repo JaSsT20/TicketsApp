@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.levid.ticketsapp.data.local.AppDb
 import com.levid.ticketsapp.data.local.entities.Client
+import com.levid.ticketsapp.data.repositories.ClientRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,12 +17,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ClientViewModel @Inject constructor(
-    private val appDb: AppDb
+    private val clientRepository: ClientRepository
 ): ViewModel() {
 
     var name by mutableStateOf("")
 
-    val clients: StateFlow<List<Client>> = appDb.clientDao().getAll()
+    val clients: StateFlow<List<Client>> = clientRepository.getAll()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -34,7 +35,7 @@ class ClientViewModel @Inject constructor(
             )
             if(isValid())
             {
-                appDb.clientDao().save(client)
+                clientRepository.saveClient(client)
                 cleanFields()
             }
         }
