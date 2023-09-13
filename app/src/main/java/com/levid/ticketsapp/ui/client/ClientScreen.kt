@@ -25,6 +25,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
@@ -146,7 +148,7 @@ fun BirthDateTextField(viewModel: ClientViewModel) {
     val datePickerDialog = DatePickerDialog(
         LocalContext.current,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            date.value = "$dayOfMonth/$month/$year"
+            date.value = "$dayOfMonth/${month+1}/$year"
             viewModel.birthDate = dateFormat.parse(date.value)!!
         }, year, month, day
     )
@@ -232,9 +234,24 @@ fun ShowList(clients: List<Client>) {
         modifier = Modifier.fillMaxWidth()
     ) {
         items(clients) { client ->
-            Text(
-                text = "${client.clientId}-${client.name} -> ${client.occupation} birthDate: ${client.birthDate}"
-            )
+            ItemContainer(client = client)
+        }
+    }
+}
+
+@Composable
+fun ItemContainer(client: Client){
+    Surface(
+        modifier = Modifier.padding(16.dp),
+        color = Color(0xFF666666)
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp)
+        ){
+            Text("Id: ${client.clientId}")
+            Text("Nombre: ${client.name} [${client.occupation}]")
+            Text("Fecha de nacimiento: ${client.birthDate}")
+            Text(text = "Email: ${client.email}")
         }
     }
 }
