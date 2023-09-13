@@ -16,7 +16,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -239,6 +241,25 @@ fun ShowList(clients: List<Client>) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun DeleteButton(){
+    val keyboardController = LocalSoftwareKeyboardController.current
+    OutlinedButton(
+        onClick = {
+            keyboardController?.hide()
+            //Poner el eliminar viewModel.saveClient()
+        },
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Icon(imageVector = Icons.Default.Delete, contentDescription = "Eliminar", tint = Color(
+            0xFFFF8585
+        )
+        )
+        Text(text = "Eliminar")
+    }
+}
+
 @Composable
 fun ItemContainer(client: Client){
     Surface(
@@ -252,6 +273,7 @@ fun ItemContainer(client: Client){
             Text("Nombre: ${client.name} [${client.occupation}]")
             Text("Fecha de nacimiento: ${client.birthDate}")
             Text(text = "Email: ${client.email}")
+            DeleteButton()
         }
     }
 }
