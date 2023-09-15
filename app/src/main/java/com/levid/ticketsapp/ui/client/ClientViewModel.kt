@@ -52,6 +52,11 @@ class ClientViewModel @Inject constructor(
             }
         }
     }
+    fun deleteClient(client: Client){
+        viewModelScope.launch {
+            clientRepository.deleteClient(client)
+        }
+    }
     private fun cleanFields(){
         name = ""
         telephone = ""

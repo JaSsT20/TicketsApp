@@ -8,5 +8,6 @@ class ClientRepository @Inject constructor(
     private val appDb: AppDb
 ) {
     suspend fun saveClient(client: Client) = appDb.clientDao().save(client)
+    suspend fun deleteClient(client: Client) = appDb.clientDao().delete(client)
     fun getAll() = appDb.clientDao().getAll()
 }
