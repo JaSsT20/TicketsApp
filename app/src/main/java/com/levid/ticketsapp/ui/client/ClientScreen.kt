@@ -1,10 +1,8 @@
 package com.levid.ticketsapp.ui.client
 
 import android.app.DatePickerDialog
-import android.os.Build
-import android.util.Log
 import android.widget.DatePicker
-import androidx.annotation.RequiresApi
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,8 +15,6 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,16 +35,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.levid.ticketsapp.data.local.AppDb
 import com.levid.ticketsapp.data.local.entities.Client
-import com.levid.ticketsapp.data.repositories.ClientRepository
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -63,6 +56,7 @@ fun ClientScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        Text(text = "Registro de personas/clientes", fontWeight = FontWeight.Bold)
         NameTextField(viewModel)
         TelephoneTextField(viewModel)
         CellphoneTextField(viewModel = viewModel)
@@ -71,7 +65,7 @@ fun ClientScreen(
         BirthDateTextField(viewModel = viewModel)
         OccupationTextField(viewModel = viewModel)
         SaveButton(viewModel)
-        ShowList(clients)
+        ShowList(viewModel, clients)
     }
 
 }
@@ -145,12 +139,12 @@ fun BirthDateTextField(viewModel: ClientViewModel) {
     val day: Int = calendar.get(Calendar.DAY_OF_MONTH)
     calendar.time = Date()
     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    
+
     val date = remember { mutableStateOf("") }
     val datePickerDialog = DatePickerDialog(
         LocalContext.current,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            date.value = "$dayOfMonth/${month+1}/$year"
+            date.value = "$dayOfMonth/${month + 1}/$year"
             viewModel.birthDate = dateFormat.parse(date.value)!!
         }, year, month, day
     )
@@ -161,7 +155,7 @@ fun BirthDateTextField(viewModel: ClientViewModel) {
         label = { Text(text = "Fecha de nacimiento") },
         singleLine = true,
         onValueChange = { date.value = it },
-        placeholder = { Text(text = "<--- Push there to pick a date")},
+        placeholder = { Text(text = "<--- Push there to pick a date") },
         leadingIcon = {
             IconButton(
                 onClick = { datePickerDialog.show() }
@@ -230,50 +224,53 @@ fun SaveButton(viewModel: ClientViewModel) {
 }
 
 @Composable
-fun ShowList(clients: List<Client>) {
+fun ShowList(viewModel: ClientViewModel, clients: List<Client>) {
     Text(text = "Lista de Clientes", style = MaterialTheme.typography.titleMedium)
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
         items(clients) { client ->
-            ItemContainer(client = client)
+            ItemContainer(viewModel = viewModel, client = client)
         }
     }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun DeleteButton(){
+fun DeleteButton(viewModel: ClientViewModel, client: Client) {
     val keyboardController = LocalSoftwareKeyboardController.current
     OutlinedButton(
         onClick = {
             keyboardController?.hide()
+            viewModel.deleteClient(client)
             //Poner el eliminar viewModel.saveClient()
         },
         modifier = Modifier.fillMaxWidth()
     ) {
-        Icon(imageVector = Icons.Default.Delete, contentDescription = "Eliminar", tint = Color(
-            0xFFFF8585
-        )
+        Icon(
+            imageVector = Icons.Filled.Delete,
+            contentDescription = "Eliminar",
+            tint = Color(0xFFFF8585)
         )
         Text(text = "Eliminar")
     }
 }
 
 @Composable
-fun ItemContainer(client: Client){
+fun ItemContainer(viewModel: ClientViewModel, client: Client) {
     Surface(
         modifier = Modifier.padding(16.dp),
-        color = Color(0xFF666666)
+        color = Color(0xFFC4C4C4),
+        border = BorderStroke(1.dp, color = Color(0xFF673AB7))
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
-        ){
+        ) {
             Text("Id: ${client.clientId}")
             Text("Nombre: ${client.name} [${client.occupation}]")
             Text("Fecha de nacimiento: ${client.birthDate}")
             Text(text = "Email: ${client.email}")
-            DeleteButton()
+            DeleteButton(viewModel, client)
         }
     }
 }
