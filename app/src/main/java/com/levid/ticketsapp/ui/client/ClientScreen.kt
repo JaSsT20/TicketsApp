@@ -146,13 +146,13 @@ fun BirthDateTextField(viewModel: ClientViewModel) {
         LocalContext.current,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
             date.value = "$dayOfMonth/${month + 1}/$year"
-            viewModel.birthDate = dateFormat.parse(date.value)!!
+            viewModel.birthDate = date.value
         }, year, month, day
     )
 
     OutlinedTextField(
         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-        value = viewModel.birthDate.toString(),
+        value = viewModel.birthDate,
         label = { Text(text = "Fecha de nacimiento") },
         singleLine = true,
         onValueChange = { date.value = it },

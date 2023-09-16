@@ -10,7 +10,7 @@ import com.levid.ticketsapp.util.typeConverter
 @TypeConverters(value = [typeConverter::class])
 @Database(
     entities = [Client::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDb: RoomDatabase() {

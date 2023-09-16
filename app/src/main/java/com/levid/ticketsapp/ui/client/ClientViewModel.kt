@@ -25,7 +25,7 @@ class ClientViewModel @Inject constructor(
     var cellphone by mutableStateOf("")
     var email by mutableStateOf("")
     var direction by mutableStateOf("")
-    var birthDate by mutableStateOf(Date())
+    var birthDate by mutableStateOf("")
     var occupation by mutableStateOf("")
 
     val clients: StateFlow<List<Client>> = clientRepository.getAll()
@@ -63,7 +63,7 @@ class ClientViewModel @Inject constructor(
         cellphone = ""
         email = ""
         direction = ""
-        birthDate = Date()
+        birthDate = ""
         occupation = ""
     }
     private fun isValid() : Boolean{

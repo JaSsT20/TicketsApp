@@ -3,6 +3,7 @@ package com.levid.ticketsapp.ui.client
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,9 +31,11 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.levid.ticketsapp.data.local.entities.Client
 import com.levid.ticketsapp.navigation.Destination
@@ -72,7 +75,7 @@ fun ShowList(viewModel: ClientViewModel, clients: List<Client>) {
 fun ItemContainer(viewModel: ClientViewModel, client: Client) {
     Surface(
         modifier = Modifier.padding(16.dp),
-        color = Color(0xFF272727),
+        color = Color(0xFFF8F8F8),
         border = BorderStroke(1.dp, color = Color(0xFF9C27B0))
     ) {
         Column(
@@ -129,15 +132,13 @@ fun RegisterButton(navController: NavController){
         }
     }
 }
-
-
 @Composable
 fun DeleteConfirmDialog(viewModel: ClientViewModel, client: Client, show: MutableState<Boolean>){
     if(show.value){
         AlertDialog(
             onDismissRequest = { show.value = false },
             title = {Text(text= "Está apunto de eliminar un cliente")},
-            text = { Text(text = "¿Está seguro que desea eliminar este cliente?")},
+            text = { Text(text = "¿Está seguro que desea eliminar este cliente?") },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -161,5 +162,4 @@ fun DeleteConfirmDialog(viewModel: ClientViewModel, client: Client, show: Mutabl
             }
         )
     }
-
 }
