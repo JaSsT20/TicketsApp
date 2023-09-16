@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.levid.ticketsapp.ui.client.ClientScreen
+import com.levid.ticketsapp.navigation.NavigationHost
+import com.levid.ticketsapp.ui.client.ClientsListScreen
 import com.levid.ticketsapp.ui.theme.TicketsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    ClientScreen()
+                    NavigationHost()
                 }
             }
         }
