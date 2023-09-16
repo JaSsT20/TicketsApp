@@ -10,15 +10,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -30,7 +36,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.levid.ticketsapp.data.local.entities.Client
 import com.levid.ticketsapp.navigation.Destination
-
 
 @Composable
 fun ClientsListScreen(
@@ -86,10 +91,13 @@ fun ItemContainer(viewModel: ClientViewModel, client: Client) {
 @Composable
 fun DeleteButton(viewModel: ClientViewModel, client: Client) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val show = remember { mutableStateOf(false) }
+    val displayDialog = DeleteConfirmDialog(viewModel = viewModel, client = client, show = show)
     OutlinedButton(
         onClick = {
+            show.value = true
             keyboardController?.hide()
-            viewModel.deleteClient(client)
+            displayDialog
         },
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -119,6 +127,39 @@ fun RegisterButton(navController: NavController){
                 contentDescription = "Register button"
             )
         }
+    }
+}
+
+
+@Composable
+fun DeleteConfirmDialog(viewModel: ClientViewModel, client: Client, show: MutableState<Boolean>){
+    if(show.value){
+        AlertDialog(
+            onDismissRequest = { show.value = false },
+            title = {Text(text= "Está apunto de eliminar un cliente")},
+            text = { Text(text = "¿Está seguro que desea eliminar este cliente?")},
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.deleteClient(client)
+                        show.value = false
+                    },
+                ) {
+                    Icon(imageVector = Icons.Filled.Delete, contentDescription = "DeleteConfirm" )
+                    Text(text = "Eliminar")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        show.value = false
+                    }
+                ) {
+                    Icon(imageVector = Icons.Filled.Close, contentDescription = "DeleteConfirm" )
+                    Text(text = "Cancelar")
+                }
+            }
+        )
     }
 
 }
