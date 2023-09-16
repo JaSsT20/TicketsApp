@@ -136,7 +136,7 @@ fun DirectionTextField(viewModel: ClientViewModel) {
 fun BirthDateTextField(viewModel: ClientViewModel) {
     val calendar: Calendar = Calendar.getInstance()
     val year: Int = calendar.get(Calendar.YEAR)
-    val month: Int = (1 + calendar.get(Calendar.MONTH))
+    val month: Int = (calendar.get(Calendar.MONTH))
     val day: Int = calendar.get(Calendar.DAY_OF_MONTH)
     calendar.time = Date()
     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -144,8 +144,8 @@ fun BirthDateTextField(viewModel: ClientViewModel) {
     val date = remember { mutableStateOf("") }
     val datePickerDialog = DatePickerDialog(
         LocalContext.current,
-        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            date.value = "$dayOfMonth/${month + 1}/$year"
+        { _: DatePicker, yearPicked: Int, monthPicked: Int, dayOfMonth: Int ->
+            date.value = "$dayOfMonth/${monthPicked + 1}/$yearPicked"
             viewModel.birthDate = date.value
         }, year, month, day
     )
@@ -175,7 +175,6 @@ fun BirthDateTextField(viewModel: ClientViewModel) {
 @Composable
 fun OccupationTextField(viewModel: ClientViewModel) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf(0) }
     val occupationList = listOf("Engineer", "Doctor", "Architect")
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -195,12 +194,15 @@ fun OccupationTextField(viewModel: ClientViewModel) {
             }
         }
     )
-    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { expanded = false }
+    ) {
         for (item in occupationList) {
             DropdownMenuItem(
                 text = { Text(text = item) },
                 onClick = {
-                    viewModel.occupation = occupationList[selectedOption]
+                    viewModel.occupation = item
                     expanded = false
                 }
             )
