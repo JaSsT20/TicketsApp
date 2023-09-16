@@ -40,7 +40,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.levid.ticketsapp.data.local.entities.Client
+import com.levid.ticketsapp.navigation.Destination
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -49,8 +51,8 @@ import java.util.Locale
 @Composable
 fun ClientScreen(
     viewModel: ClientViewModel = hiltViewModel(),
+    navController: NavController
 ) {
-    val clients by viewModel.clients.collectAsStateWithLifecycle()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,8 +66,7 @@ fun ClientScreen(
         DirectionTextField(viewModel = viewModel)
         BirthDateTextField(viewModel = viewModel)
         OccupationTextField(viewModel = viewModel)
-        SaveButton(viewModel)
-        ShowList(viewModel, clients)
+        SaveButton(viewModel, navController)
     }
 
 }
@@ -209,68 +210,17 @@ fun OccupationTextField(viewModel: ClientViewModel) {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SaveButton(viewModel: ClientViewModel) {
+fun SaveButton(viewModel: ClientViewModel, navController: NavController) {
     val keyboardController = LocalSoftwareKeyboardController.current
     OutlinedButton(
         onClick = {
             keyboardController?.hide()
             viewModel.saveClient()
+            navController.navigate(route = Destination.ClientsListScreen.route)
         },
         modifier = Modifier.fillMaxWidth()
     ) {
         Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "guardar")
         Text(text = "Guardar")
-    }
-}
-
-@Composable
-fun ShowList(viewModel: ClientViewModel, clients: List<Client>) {
-    Text(text = "Lista de Clientes", style = MaterialTheme.typography.titleMedium)
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        items(clients) { client ->
-            ItemContainer(viewModel = viewModel, client = client)
-        }
-    }
-}
-
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun DeleteButton(viewModel: ClientViewModel, client: Client) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    OutlinedButton(
-        onClick = {
-            keyboardController?.hide()
-            viewModel.deleteClient(client)
-            //Poner el eliminar viewModel.saveClient()
-        },
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Icon(
-            imageVector = Icons.Filled.Delete,
-            contentDescription = "Eliminar",
-            tint = Color(0xFFFF8585)
-        )
-        Text(text = "Eliminar")
-    }
-}
-
-@Composable
-fun ItemContainer(viewModel: ClientViewModel, client: Client) {
-    Surface(
-        modifier = Modifier.padding(16.dp),
-        color = Color(0xFFC4C4C4),
-        border = BorderStroke(1.dp, color = Color(0xFF673AB7))
-    ) {
-        Column(
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Text("Id: ${client.clientId}")
-            Text("Nombre: ${client.name} [${client.occupation}]")
-            Text("Fecha de nacimiento: ${client.birthDate}")
-            Text(text = "Email: ${client.email}")
-            DeleteButton(viewModel, client)
-        }
     }
 }
