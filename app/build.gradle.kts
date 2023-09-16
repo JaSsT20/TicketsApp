@@ -1,13 +1,13 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
     namespace = "com.levid.ticketsapp"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.levid.ticketsapp"
@@ -42,15 +42,12 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
-    }
-    kapt{
-        correctErrorTypes = true
     }
 }
 //evita el error: task (current target is 1.8) and 'kaptGenerateStubsDebugKotlin' task (current target is 17) jvm target compatibility should be set to the same Java version.
@@ -75,19 +72,25 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
     //  To use Kotlin annotation processing tool (kapt)
-    kapt("androidx.room:room-compiler:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
 
     //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.42")
+    val hiltVersion = "2.48"
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
     //ViewModel
-    val lifeCycleVersion = "2.6.1"
+    val lifeCycleVersion = "2.6.2"
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifeCycleVersion")
 
     // Para poder usar collectAsStateWithLifeCycle
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifeCycleVersion")
+
+    //navigation
+    val navigationVersion = "2.7.2"
+    implementation("androidx.navigation:navigation-compose:$navigationVersion")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
