@@ -14,6 +14,8 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -75,8 +77,7 @@ fun ShowList(viewModel: ClientViewModel, clients: List<Client>) {
 fun ItemContainer(viewModel: ClientViewModel, client: Client) {
     Surface(
         modifier = Modifier.padding(16.dp),
-        color = Color(0xFFF8F8F8),
-        border = BorderStroke(1.dp, color = Color(0xFF9C27B0))
+        border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.outline)
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
@@ -102,14 +103,18 @@ fun DeleteButton(viewModel: ClientViewModel, client: Client) {
             keyboardController?.hide()
             displayDialog
         },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        colors = ButtonDefaults
+            .buttonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            )
     ) {
         Icon(
             imageVector = Icons.Filled.Delete,
             contentDescription = "Eliminar",
-            tint = Color(0xFFFF8585)
+            tint = MaterialTheme.colorScheme.error
         )
-        Text(text = "Eliminar")
+        Text(text = "Eliminar", color = MaterialTheme.colorScheme.error)
     }
 }
 
@@ -127,7 +132,8 @@ fun RegisterButton(navController: NavController){
         ) {
             Icon(
                 imageVector = Icons.Filled.AccountCircle,
-                contentDescription = "Register button"
+                contentDescription = "Register button",
+
             )
         }
     }
@@ -145,6 +151,7 @@ fun DeleteConfirmDialog(viewModel: ClientViewModel, client: Client, show: Mutabl
                         viewModel.deleteClient(client)
                         show.value = false
                     },
+
                 ) {
                     Icon(imageVector = Icons.Filled.Delete, contentDescription = "DeleteConfirm" )
                     Text(text = "Eliminar")
