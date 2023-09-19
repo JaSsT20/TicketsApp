@@ -87,6 +87,7 @@ fun NameTextField(viewModel: ClientViewModel) {
 @Composable
 fun TelephoneTextField(viewModel: ClientViewModel) {
     OutlinedTextField(
+        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Teléfono") },
         singleLine = true,
@@ -99,6 +100,7 @@ fun TelephoneTextField(viewModel: ClientViewModel) {
 @Composable
 fun CellphoneTextField(viewModel: ClientViewModel) {
     OutlinedTextField(
+        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Celular") },
         singleLine = true,
@@ -139,7 +141,6 @@ fun BirthDateTextField(viewModel: ClientViewModel) {
     val month: Int = (calendar.get(Calendar.MONTH))
     val day: Int = calendar.get(Calendar.DAY_OF_MONTH)
     calendar.time = Date()
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     val date = remember { mutableStateOf("") }
     val datePickerDialog = DatePickerDialog(
@@ -209,7 +210,6 @@ fun OccupationTextField(viewModel: ClientViewModel) {
         }
     }
 }
-
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SaveButton(viewModel: ClientViewModel, navController: NavController) {
