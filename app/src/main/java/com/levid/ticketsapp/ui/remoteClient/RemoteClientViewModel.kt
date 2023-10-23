@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ClientViewModel @Inject constructor(
+class RemoteClientViewModel @Inject constructor(
     private val clientRepository: ClientRepository
 ): ViewModel() {
     var name by mutableStateOf("")
@@ -22,10 +22,10 @@ class ClientViewModel @Inject constructor(
     var direction by mutableStateOf("")
     var birthDate by mutableStateOf("")
     var occupation by mutableStateOf("")
-
+    var clientsList by mutableStateOf<List<ClientDto>>(emptyList())
     init {
         viewModelScope.launch {
-            val clients : List<ClientDto> = clientRepository.getRemoteClients()
+            clientsList = clientRepository.getRemoteClients()
         }
     }
 
