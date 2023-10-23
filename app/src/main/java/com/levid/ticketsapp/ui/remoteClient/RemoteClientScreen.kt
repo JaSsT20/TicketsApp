@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -36,8 +38,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.levid.ticketsapp.data.remote.dto.ClientDto
 import com.levid.ticketsapp.navigation.Destination
 import com.levid.ticketsapp.ui.client.ClientViewModel
+import com.levid.ticketsapp.ui.client.ItemContainer
 import java.util.Calendar
 import java.util.Date
 
@@ -46,7 +50,7 @@ import java.util.Date
 fun RemoteClientScreen(
     viewModel: RemoteClientViewModel = hiltViewModel()
 ) {
-//    val clientsList = viewModel.clientsList
+    val clientsList = viewModel.clientsList
     Column(
         modifier = Modifier
             .fillMaxSize()
