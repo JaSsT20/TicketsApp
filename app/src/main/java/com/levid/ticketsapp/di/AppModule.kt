@@ -22,4 +22,7 @@ object AppModule{
             "AppDb.db")
             .fallbackToDestructiveMigration()
             .build()
+
+    @Provides
+    fun provideClientDao(appDb: AppDb) = appDb.clientDao()
 }
