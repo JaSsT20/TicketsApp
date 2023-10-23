@@ -7,9 +7,9 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface TicketsApi {
-    @GET("/Client")
+    @GET("/api/Client")
     suspend fun getClients(): List<ClientDto>
 
-    @POST("/Client")
+    @POST("/api/Client")
     suspend fun postClient(@Body clientDto: ClientDto): Response<ClientDto>
 }

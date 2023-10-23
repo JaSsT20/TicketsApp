@@ -11,6 +11,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -42,7 +43,7 @@ object AppModule{
     @Singleton
     fun provideTicketApi(moshi: Moshi): TicketsApi {
         return Retrofit.Builder()
-            .baseUrl("https://ticketsapilevid.azurewebsites.net/api/")
+            .baseUrl("https://ticketsapilevid.azurewebsites.net")
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(TicketsApi::class.java)
